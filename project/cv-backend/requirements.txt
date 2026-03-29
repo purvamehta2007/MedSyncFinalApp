@@ -1,9 +1,10 @@
 fastapi
 uvicorn
 python-multipart
-opencv-python
-easyocr
+opencv-python-headless
 numpy
 pillow
+easyocr==1.7.1
 torch
 torchvision
+python-bidi==0.4.2
