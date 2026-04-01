@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { supabase, Reminder, Medicine } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/auth-context';
 import { Bell, X } from 'lucide-react';
 
@@ -14,9 +14,8 @@ interface NotificationItem {
 export function ReminderNotifications() {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [requestedPermission, setRequestedPermission] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const checkIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -38,7 +37,6 @@ export function ReminderNotifications() {
   const requestNotificationPermission = async () => {
     if ('Notification' in window && Notification.permission === 'default') {
       await Notification.requestPermission();
-      setRequestedPermission(true);
     }
   };
 

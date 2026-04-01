@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth-context';
-import { Pill, CircleAlert as AlertCircle, CircleCheck as CheckCircle } from 'lucide-react';
+import { Pill, CircleAlert as AlertCircle } from 'lucide-react';
 
 export function SignupPage() {
   const [email, setEmail] = useState('');

@@ -43,7 +43,7 @@ export function EmergencyPage() {
     try {
       const contactIds = contacts.map((c) => c.id);
 
-      const { data: alert, error: alertError } = await supabase
+      const { error: alertError } = await supabase
         .from('emergency_alerts')
         .insert([
           {
