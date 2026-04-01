@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { supabase, Intake, Medicine } from '../lib/supabase';
-import { useAuth } from '../lib/auth-context';
 import { CircleCheck as CheckCircle, Circle as XCircle, Clock, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 
 export function IntakesPage() {
-  const { user } = useAuth();
   const [intakes, setIntakes] = useState<Intake[]>([]);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [loading, setLoading] = useState(true);
