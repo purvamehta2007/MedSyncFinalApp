@@ -81,13 +81,13 @@ export function MedicineScanner({ onDrugFound, onSearching }: MedicineScannerPro
         if (result) {
           onDrugFound(result);
         } else {
-          setError("Could not identify the medicine from the image. Please try entering the name manually.");
+          setError("Could not identify the medicine from the image. Please try entering the name manually or use one of the available options below.");
         }
       } else {
-        setError("Could not read the medicine name from the image. Please try again with a clearer image or enter the name manually.");
+        setError("⚠️ CV Backend not running: Image processing is unavailable. Please manually search for your medicine using the search box or click on a medicine from the available options below. To enable image scanning, start the backend server (see documentation).");
       }
     } catch {
-      setError("Failed to process the image. Please try again.");
+      setError("Failed to process the image. Please try again or manually search for your medicine.");
     } finally {
       setIsProcessing(false);
       onSearching(false);
