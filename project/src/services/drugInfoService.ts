@@ -178,12 +178,13 @@ export async function searchDrug(query: string): Promise<DrugInfo | null> {
   return null;
 }
 
-// FIX: Proper error handling + candidate-aware matching.
+// FIX: Proper error handling + candidate-aware matching + fallback for offline mode.
 // Steps:
 //   1. POST the image to /scan
 //   2. Get { medicine, candidates } back
 //   3. Try each candidate against the DB and return the first hit
 //   4. Fall back to the top-level `medicine` string if no candidate matched
+//   5. If backend unavailable, return null with helpful error guidance
 export async function extractDrugFromImage(file: File): Promise<string | null> {
   const formData = new FormData();
   formData.append("file", file);
@@ -194,6 +195,7 @@ export async function extractDrugFromImage(file: File): Promise<string | null> {
     const response = await fetch("http://127.0.0.1:8000/scan", {
       method: "POST",
       body: formData,
+      signal: AbortSignal.timeout(10000), // 10 second timeout
     });
 
     // FIX: was silently returning null on non-200 — now throws with detail
@@ -204,7 +206,10 @@ export async function extractDrugFromImage(file: File): Promise<string | null> {
 
     data = await response.json();
   } catch (error) {
-    console.error("Image scan failed:", error);
+    // Backend unavailable or request failed
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error("[v0] Image scan failed - backend may not be running:", errorMsg);
+    console.error("[v0] To start the CV backend, run: python3 scripts/setup-cv-backend.py && python3 scripts/start-cv-backend.sh");
     return null;
   }
 
